@@ -10,16 +10,14 @@ function activate(context) {
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand('extension.autoalign', function () {
-      
+      const aligner                   = new Aligner();
+      aligner.movableItemsList        = vscode.workspace.getConfiguration().get('autoalign.moveableItems');
+      aligner.nonMovableItemsList     = vscode.workspace.getConfiguration().get('autoalign.nonMoveableItems');
+      aligner.minSeparation           = vscode.workspace.getConfiguration().get('autoalign.minSeparation');
+      aligner.columnWidth             = vscode.workspace.getConfiguration().get('autoalign.columnWidth');
 
-      const aligner = new Aligner();
-      aligner.movableItemsList = vscode.workspace.getConfiguration().get('autoalign.moveableItems');
-      aligner.nonMovableItemsList = vscode.workspace.getConfiguration().get('autoalign.nonMoveableItems');
-      aligner.minSeparation = vscode.workspace.getConfiguration().get('autoalign.minSeparation');
-      aligner.columnWidth = vscode.workspace.getConfiguration().get('autoalign.columnWidth');
-
-      let editor    = vscode.window.activeTextEditor;
-      let selections = editor.selections; // handle multiple selections the same
+      let editor                      = vscode.window.activeTextEditor;
+      let selections                  = editor.selections; // handle multiple selections the same
 
       if ( ! isSomethingSelected(editor) ) {
         vscode.window.showInformationMessage("Auto-Align only works on selections.");
@@ -61,11 +59,11 @@ function isSomethingSelected(editor) {
   if ( ! editor) {
     return false;
   }
-  let selections = editor.selections; // handle multiple selections the same
-  let foundSomething = false;
+  let selections        = editor.selections; // handle multiple selections the same
+  let foundSomething    = false;
   selections.forEach(selection => {
     if (selection.start.line !== selection.end.line) {
-      foundSomething = true;
+      foundSomething    = true;
     }
   });
 
@@ -89,7 +87,7 @@ class Aligner {
       return text;
     }
 
-    const lines = text.split(/\r\n|\r|\n/);
+    const lines                     = text.split(/\r\n|\r|\n/);
 
     // NOT ENOUGH TO COMPARE
     if (lines.length < 2) {
@@ -97,29 +95,29 @@ class Aligner {
     }
 
     // GET FARTHEST ALIGNABLE ELEMENT
-    let farthestAlignable = 0;
+    let farthestAlignable           = 0;
     lines.forEach(line => {
-      let lineAlignablePosition = this._getAlignablePosition(line);
+      let lineAlignablePosition     = this._getAlignablePosition(line);
       if (lineAlignablePosition >= farthestAlignable) {
 
         // this is the farthest we've been!
-        farthestAlignable = lineAlignablePosition;
+        farthestAlignable           = lineAlignablePosition;
         
         // now, figure out how much white-space is "to the left" of the character
-        let leftOfCharacter = line.substr(0, lineAlignablePosition-1);
-        let unTrimmedLength = leftOfCharacter.length;
-        let trimmendLength  = this._trimEnd(leftOfCharacter).length;
-        let whiteAtEndCount = (unTrimmedLength - trimmendLength);
+        let leftOfCharacter         = line.substr(0, lineAlignablePosition-1);
+        let unTrimmedLength         = leftOfCharacter.length;
+        let trimmendLength          = this._trimEnd(leftOfCharacter).length;
+        let whiteAtEndCount         = (unTrimmedLength - trimmendLength);
 
         // we need to make sure it is the "minimum" white-space
         if (whiteAtEndCount < this.minSeparation) {
-          let addAtEndCount = this.minSeparation - whiteAtEndCount;
-          farthestAlignable += addAtEndCount;          
+          let addAtEndCount         = this.minSeparation - whiteAtEndCount;
+          farthestAlignable         += addAtEndCount;          
         }
 
         // NEAREST FACTOR OF
         if (this.columnWidth > 1 && farthestAlignable % this.columnWidth) {
-          farthestAlignable = ((~~(farthestAlignable/this.columnWidth) + 1) * this.columnWidth);
+          farthestAlignable         = ((~~(farthestAlignable/this.columnWidth) + 1) * this.columnWidth);
         }
       }
     });
@@ -127,7 +125,7 @@ class Aligner {
     // WE HAVE THINGS TO ALIGN
     if (farthestAlignable > 0) {
       for (let i = 0; i < lines.length; i++) {
-        lines[i] = this._alignToPosition(lines[i], farthestAlignable);
+        lines[i]                    = this._alignToPosition(lines[i], farthestAlignable);
       }
     }
     
@@ -170,16 +168,16 @@ class Aligner {
     return this._getNearestOccurance(line, this.nonMovableItemsList);
   }
   _getNearestOccurance(line, itemList) {
-    let nearestPosition = 1000000; // simply huge to start
-    let foundItem = undefined;
+    let nearestPosition                   = 1000000; // simply huge to start
+    let foundItem                         = undefined;
     itemList.forEach(item => {
-      let positionOfItem = line.indexOf(item);
+      let positionOfItem                  = line.indexOf(item);
       if (positionOfItem > -1) {
-        foundItem = item;
-        nearestPosition = Math.min(nearestPosition, line.indexOf(item));
+        foundItem                         = item;
+        nearestPosition                   = Math.min(nearestPosition, line.indexOf(item));
       }
     });
-    return foundItem ? nearestPosition : -1;
+    return foundItem ? nearestPosition    : -1;
   }
   _splice(text, start, delCount, insertText) {
     return text.slice(0, start) + insertText + text.slice(start + Math.abs(delCount));

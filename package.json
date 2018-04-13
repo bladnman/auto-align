@@ -2,8 +2,9 @@
     "name": "auto-align",
     "displayName": "Auto-Align",
     "description": "Align code on assignment characters.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "bladnman",
+
     "engines": {
         "vscode": "^1.22.0"
     },
@@ -31,7 +32,9 @@
                 "type": "array",
                 "default": [
                   "=",
-                  ":"
+                  ":",
+                  "+=",
+                  "-="
                 ],
                 "description": "Which items will be aligned"
               },

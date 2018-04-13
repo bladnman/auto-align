@@ -1,20 +1,29 @@
-# auto-align README
+# Auto-Align
 
-This is the README for your extension "auto-align". After writing up a brief description, we recommend including the following sections.
+This is an alignment utility that allows for a bit of customization. It will line up assignment operators (`=` and `:` by default) in selected text.
+
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
-For example if there is an image subfolder under your extension project workspace:
+This system will *not* alter any lines where any of the `non-moveable` items are found to the left of a moveable item.
 
-\!\[feature X\]\(images/feature-x.png\)
+It is likely you will find scenarios where this does not quite fit your needs with advanced CSS selectors and the likes. You get to set the `moveable` and `non-moveable` in your personal settings file.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+You can also define a minimum amount of space you want to see on the left of the moveable items. This is essentially the margin.
 
-## Requirements
+```
+x = 12;
+name = "Dexter";
+```
+[BECOMES]
+```
+x      = 12;
+name   = "Dexter";
+```
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+You get the idea. This can be done in any language format.
+
 
 ## Extension Settings
 
@@ -24,42 +33,16 @@ For example:
 
 This extension contributes the following settings:
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `autoalign.moveableItems`: An array of strings of the items which can be moved and aligned
+* `autoalign.nonMoveableItems`: An array of string which cannot be moved and will prevent a line from being aligned
+* `autoalign.minSeparation`: Minimum amount of white-space placed before the aligned items
+* `autoalign.columnWidth`: If this is > 1 then all alignments will be matched up to imaginary columns of this width
 
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
 ## Release Notes
 
 Users appreciate release notes as you update your extension.
 
-### 1.0.0
+### 0.0.1
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release
