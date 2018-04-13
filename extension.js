@@ -9,72 +9,14 @@ function activate(context) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.align', function () {
-      const movableItemsList = [
-        "=",
-        ":",
-      ];
-      const nonMovableItemsList = [
-        "==",   
-        "!=",
-        "/",
-        "*",
-        "#",
-        "+=",
-        "-=",
-        "*=",
-        "<=",
-        ">=",
-        "=>",
-        "=<",
-        ".=",
-        "for(",
-        "for (",
-        "if(",
-        "if (",
-        "-(",
-        "- (",
-        "(\"",
-        "(\'",
-        "(\`",
-        "=~",
-        "&:",
-        ">:",
-        "*:",
-        "::",
-        ":active",
-        ":checked",
-        ":disabled",
-        ":empty",
-        ":enabled",
-        ":first-",
-        ":focus",
-        ":hover",
-        ":in-range",
-        ":invalid",
-        ":lang",
-        ":last-",
-        ":link",
-        ":not",
-        ":nth-",
-        ":only-",
-        ":optional",
-        ":out-of-range",
-        ":read-",
-        ":required",
-        ":root",
-        ":target",
-        ":valid",
-        ":visited",
-      ];
-      const minSeparation = 3;
-      const columnWidth = 2;
+    let disposable = vscode.commands.registerCommand('extension.autoalign', function () {
+      
 
       const aligner = new Aligner();
-      aligner.movableItemsList = movableItemsList;
-      aligner.nonMovableItemsList = nonMovableItemsList;
-      aligner.minSeparation = minSeparation;
-      aligner.columnWidth = columnWidth;
+      aligner.movableItemsList = vscode.workspace.getConfiguration().get('autoalign.moveableItems');
+      aligner.nonMovableItemsList = vscode.workspace.getConfiguration().get('autoalign.nonMoveableItems');
+      aligner.minSeparation = vscode.workspace.getConfiguration().get('autoalign.minSeparation');
+      aligner.columnWidth = vscode.workspace.getConfiguration().get('autoalign.columnWidth');
 
       let editor    = vscode.window.activeTextEditor;
       let selections = editor.selections; // handle multiple selections the same
