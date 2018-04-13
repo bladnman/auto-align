@@ -1,0 +1,335 @@
+/* Copyright 2015 The Chromium Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file. */
+
+
+@font-face {
+ font-family: 'Roboto';
+ font-style: normal;
+ font-weight: 400;
+ src: local('Roboto'), local('Roboto-Regular'),
+ url(chrome://resources/roboto/roboto-regular.woff2) format('woff2');
+}
+
+@font-face {
+ font-family: 'Roboto';
+ font-style: normal;
+ font-weight: 500;
+ src: local('Roboto Medium'), local('Roboto-Medium'),
+ url(chrome://resources/roboto/roboto-medium.woff2) format('woff2');
+}
+
+@font-face {
+ font-family: 'Roboto';
+ font-style: normal;
+ font-weight: 700;
+ src: local('Roboto Bold'), local('Roboto-Bold'),
+ url(chrome://resources/roboto/roboto-bold.woff2) format('woff2');
+}
+
+
+:root {
+
+
+	/* image panel */
+	--sskt__panel-image--width : 213;
+	--sskt__panel-image--width--large : 356;
+	--sskt__panel-image--left : 0;
+
+	/* disclosure panel */
+	--sskt--panel-disclosure--size : 0;
+	--sskt__panel-disclosure--width : var(--sskt--panel-disclosure--size);
+	--sskt__panel-disclosure--left : calc(var(--sskt__panel-image--left) + var(--sskt__panel-image--width));
+	--sskt__panel-disclosure--left--large : calc(var(--sskt__panel-image--left) + var(--sskt__panel-image--width--large));
+
+	/* meta panel */
+	--sskt__panel-meta--width : 315;
+	--sskt__panel-meta--width--HOLD_FOR_GRID_EXPANDABLE : 215;
+	--sskt__panel-meta--left : calc(var(--sskt__panel-disclosure--left) + var(--sskt__panel-disclosure--width));
+	--sskt__panel-meta--left--large : calc(var(--sskt__panel-disclosure--left--large) + var(--sskt__panel-disclosure--width));
+
+
+
+	/* tile */
+	--sskt--height : 267;
+	--sskt--width--collapsed : var(--sskt__panel-image--width);
+	--sskt--width--collapsed--large : var(--sskt__panel-image--width);
+	--sskt--width--expanded : calc(var(--sskt__panel-meta--left) + var(--sskt__panel-meta--width));
+	--sskt--width--expanded--large : calc(var(--sskt__panel-meta--left--large) + var(--sskt__panel-meta--width));
+
+
+}
+
+/* - - - - - - - - - - - - - - - - - -
+		STANDARD - sskt_ shorthand
+	- - - - - - - - - - - - - - - - - - - */
+.standard-side-kick-tile {
+	color : var(--color__white--dim);
+	position : relative;
+	display : block;
+	width : var(--sskt--width--collapsed)px;
+ user-select : none;
+}
+.standard-side-kick-tile.is-large-tile {
+	width : var(--sskt__panel-image--width--large)px;
+	.sskt__panel-image {
+		width : var(--sskt__panel-image--width--large)px;
+	}
+	.sskt__panel-disclosure {
+		left : var(--sskt__panel-disclosure--left--large)px;
+	}
+}
+.standard-side-kick-tile {
+
+	font-size : 14px;
+	position : relative;
+	cursor : default;
+
+	height : var(--sskt--height)px;
+
+	.sskt__panel {
+		position : absolute;
+		top : 0;
+		bottom : 0;
+ background-color : black;
+	}
+	.sskt__panel-image {
+		width : var(--sskt__panel-image--width)px;
+		left : var(--sskt__panel-image--left)px;
+	}
+	.sskt__panel-disclosure {
+		width : var(--sskt__panel-disclosure--width)px;
+		left : var(--sskt__panel-disclosure--left)px;
+	}
+
+
+
+	/* - - - - - - - - - - - - - - - - - -
+			COMMON ELEMENTS
+		- - - - - - - - - - - - - - - - - - - */
+	.sskt__badge-area {
+		position : absolute;
+		top : 0;
+		right : 0;
+		height : 18px;
+ width : 100%;
+	}
+	.meta__data-area {
+		position : relative;
+		box-sizing : border-box;
+		line-height : 1em;
+		.meta__main-line {
+			font-weight : bold;
+			margin-bottom : 0.2em;
+			line-height : 1.2em;
+			display : inline-block;
+
+
+			/*border-bottom : 1px solid #8c8c8c;*/
+			text-decoration : underline;
+
+			opacity : 0.9;
+			&:hover {
+				opacity : 1.0;
+			}
+		}
+		.meta__second-line, .meta__collection-label {
+			color : var(--color__white-on-rubber);
+			font-size : 12px;
+			max-height : 28px;
+			overflow : hidden;
+			font-weight: 500;
+			@mixin no-font-smoothing;
+		}
+		.meta__collection-label {
+			font-weight : 600;
+			margin-top : 20px;
+		}
+		.meta__description {
+			font-weight : bold;
+		}
+
+	}
+	.sskt__progress-bar-area {
+		position : absolute;
+		left : 0;
+		right : 0;
+		bottom : 0;
+		height : 10px;
+		padding : 2px 0;
+		background : black;
+	}
+
+	/* - - - - - - - - - - - - - - - - - -
+			HOVER - STANDARD
+		- - - - - - - - - - - - - - - - - - - */
+	&:hover {
+		.meta__main-line {
+			/*text-decoration : none;
+			border-bottom-color: white;*/
+		}
+	}
+}
+
+
+
+/* - - - - - - - - - - - - - - - - - -
+		DISCLOSURE INDICATOR
+	- - - - - - - - - - - - - - - - - - - */
+.standard-side-kick-tile.expand-supported {
+
+	@mixin tile-hover-rules;
+
+	.sskt__expand-selector-area {
+		overflow : hidden;
+		height : 100%;
+		width : var(--sskt--panel-disclosure--size)px;
+		position : absolute;
+		bottom : 0;
+		right : -var(--sskt--panel-disclosure--size)px;
+		display : flex;
+		justify-content : flex-end;
+		flex-direction    : column;
+		.sskt__expand-selector-icon-area {
+			display : flex;
+			justify-content : center;
+			flex-direction : column;
+			transition : all 150ms ease-in;
+			background : rgba(0, 0, 0, 0.15);
+			height : 100%;
+
+			.sskt__see-more-button__icon {
+				width : var(--sskt--panel-disclosure--size)px;
+				height : var(--sskt--panel-disclosure--size)px;
+				opacity : 0.8;
+				transition : all 150ms ease-in;
+				transform : scale(0.5);
+			}
+		}
+	}
+
+
+	/* COLLAPSED */
+	&:not(.is-expanded) {
+		.sskt__expand-selector-icon-area {
+			transform : translateX(-var(--sskt--panel-disclosure--size)px);
+		}
+
+
+		/* - - - - - - - - - - - - - - - - - -
+				HOVER - STANDARD
+			- - - - - - - - - - - - - - - - - - - */
+		&.hover {
+			.sskt__expand-selector-area {
+				.sskt__expand-selector-icon-area {
+					transform : translateX(0px);
+					transition : all 300ms ease-out;
+
+					&:hover {
+						background : rgba(0, 0, 0, 0.3);
+						.sskt__see-more-button__icon {
+							opacity : 0.8;
+							transform : scale(0.6);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	/* EXPANDED */
+	&.is-expanded {
+		.sskt__expand-selector-icon-area {
+			background : #000;
+			transform : translateX(0px);
+
+			.sskt__see-more-button__icon {
+				transform : scale(0.6) rotate(180deg)
+			}
+
+			&:hover {
+				background : #151515;
+			}
+		}
+	}
+
+}
+.standard-side-kick-tile.expand-not-supported {
+	cursor : default;
+}
+
+
+/* - - - - - - - - - - - - - - - - - -
+		EXPANDED
+	- - - - - - - - - - - - - - - - - - - */
+.standard-side-kick-tile.is-expanded {
+
+	width : var(--sskt--width--expanded)px;
+	.sskt__panel-meta {
+		width : var(--sskt__panel-meta--width)px;
+		left : var(--sskt__panel-meta--left)px;
+	}
+}
+.standard-side-kick-tile.is-expanded.is-large-tile {
+
+	width : var(--sskt--width--expanded--large)px;
+
+	.sskt__panel-meta {
+		left : var(--sskt__panel-meta--left--large)px;
+	}
+}
+.standard-side-kick-tile.is-transparent {
+	background-color : transparent;
+	.sskt__expand-selector-icon-area,
+	.sskt__expand-selector-icon-area:hover,
+	.sskt__panel-meta,
+	&.is-expanded .sskt__expand-selector-icon-area {
+		background-color : transparent;
+	}
+
+	.sskt__panel-meta .sskt__progress-bar-area {
+		background-color : transparent;
+	}
+
+
+	&.channel-item {
+		.sskt__image-only-panel {
+			.sskt__image-area {
+				background : black;
+			}
+		}
+
+		.sskt__channel-program-divider {
+			border-top-color: #656565;
+		}
+	}
+}
+.standard-side-kick-tile.is-large-tile.is-expanded.expand-not-supported {
+	width: 657px;
+	.sskt__panel-disclosure {
+		display : none;
+	}
+	.sskt__panel-meta {
+		left: 356px;
+	}
+}
+
+/* DYNAGRID NOT VISIBLE CELL RULES */
+.cell-not-visible .standard-side-kick-tile {
+ .sskt__panel {
+ display : none;
+ }
+ background : rgba(255, 255, 255, 0.04);
+ box-sizing : border-box;
+ border : 1px solid rgba(255, 255, 255, 0.15);
+}
+
+
+@import './image-summary-panel/styles.css';
+@import './image-only-panel/styles.css';
+@import './meta-panel/styles.css';
+@import './meta-panel-channel/styles.css';
+@import './stencil/styles.css';
+@import './trouble-loading/styles.css';
+@import './no-results/styles.css';

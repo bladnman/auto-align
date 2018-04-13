@@ -1,0 +1,70 @@
+{
+  "body": {
+    "items": [{
+      "sentv_type": "TV Shows",
+      "id": 1480993,
+      "title": "Tanked",
+      "title_sub": "Triple Tank Throwdown!",
+      "display_title": "Tanked",
+      "display_episode_title": "Triple Tank Throwdown!",
+      "season_num": "14",
+      "episode_num": "3",
+      "expiring": false,
+      "dvr_expiring": false,
+      "playable": false,
+      "another": true,
+      "airing_date": "2018-04-14T01:00:00.000Z",
+      "synopsis": "Wayde and Brett must come up with three complementary interiors, one with a working fireplace.",
+      "series_synopsis": "If your idea of an exciting aquarium is the run-of-the-mill rectangular variety with a few exotic fish thrown in, you're not welcome in the wet and wonderful world of Wayde King and Brett Raymer. The brothers-in-law, best friends and business partners operate Acrylic Tank Manufacturing, the biggest aquarium-building manufacturer in the U.S. \"Tanked\" showcases the guys, their family members who also work at ATM and the shop's crew as they create over-the-top aquariums for a wide array of clients, both celebrities and regular folks. The tanks range from 50 to 50,000 gallons in size, are filled with some of the world's most unusual, colorful and quirky fish, and are limited only by one's imagination.",
+      "expiration_date": "2018-04-17T01:00:00.000Z",
+      "dvr_expiration_date": "2018-05-12T01:00:00.000Z",
+      "broadcast_date": "2018-04-13T00:00:00.000Z",
+      "genres": [{
+          "genre_id": 79,
+          "genre": "Outdoors & Nature"
+        },
+        {
+          "genre_id": 81,
+          "genre": "Reality"
+        }
+      ],
+      "airings": [{
+        "airing_id": 21055932,
+        "type": "catchup",
+        "airing_date": "2018-04-14T01:00:00.000Z",
+        "airing_enddate": "2018-04-14T02:00:00.000Z",
+        "dvr_expiration_date": "2018-05-12T01:00:00.000Z",
+        "expiration_date": "2018-04-17T01:00:00.000Z",
+        "channel_id": 25077,
+        "channel_logo": "http://epg-image.totsuko.tv/epg-images/channel/25077/APLGreen_440x330_SIZE_SONY_CHANNEL_LOGO.png",
+        "channel_name": "Animal Planet",
+        "age_rating": "TV-PG",
+        "entitled": true,
+        "restrict_mobile": false,
+        "restrict_out_of_home": false,
+        "restrict_dvr_out_of_home": false,
+        "complete_playlist_available": true,
+        "block_fast_forward": true,
+        "vod_replacement_available": false,
+        "badge": "coming_up",
+        "start_over_date": "2018-04-17T01:00:00.000Z",
+        "dvr_restricted": false
+      }],
+      "cast": [],
+      "in_custom_collections": [],
+      "tms_id": "EP014108630164",
+      "series_id": 21274,
+      "is_new": true,
+      "is_favorite": false,
+      "channel_owner_ids": [],
+      "channel": {
+        "channel_id": 25077,
+        "name": "Animal Planet",
+        "name_short": "APLHD",
+        "channel_type": "linear"
+      },
+      "watched": false
+    }],
+    "total_results": 21
+  }
+}
