@@ -27,22 +27,22 @@ You get the idea. This can be done in any language format.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
+* `autoalign.moveableItemsAdditional` : Items you want ADDED to the default list of moveable items. Use this one as you don't have to repeat the whole list of defaults.
+* `autoalign.nonMoveableItemsAdditional` : Items you want ADDED to the default list of non-moveable items. Use this one as you don't have to repeat the whole list of defaults.
 * `autoalign.moveableItems`: An array of strings of the items which can be moved and aligned
 * `autoalign.nonMoveableItems`: An array of string which cannot be moved and will prevent a line from being aligned
-* `autoalign.minSeparation`: Minimum amount of white-space placed before the aligned items
+* `autoalign.minSeparationLeft`: Minimum amount of white-space placed before the aligned items
+* `autoalign.separationRight`: The number of spaces you want after the aligned item (e.g. spaces to the right of the equals)
 * `autoalign.columnWidth`: If this is > 1 then all alignments will be matched up to imaginary columns of this width
 
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+
+### 0.0.4
+Big improvements around customization. Also will now re-align already aligned areas.
 
 ### 0.0.1
-
 Initial release

@@ -11,9 +11,10 @@ function activate(context) {
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand('extension.autoalign', function () {
       const aligner                   = new Aligner();
-      aligner.movableItemsList        = vscode.workspace.getConfiguration().get('autoalign.moveableItems');
-      aligner.nonMovableItemsList     = vscode.workspace.getConfiguration().get('autoalign.nonMoveableItems');
-      aligner.minSeparation           = vscode.workspace.getConfiguration().get('autoalign.minSeparation');
+      aligner.movableItemsList        = getMoveableItemsArray();
+      aligner.nonMovableItemsList     = getNonMoveableItemsArray();
+      aligner.minSeparationLeft       = vscode.workspace.getConfiguration().get('autoalign.minSeparationLeft');
+      aligner.separationRight         = vscode.workspace.getConfiguration().get('autoalign.separationRight');
       aligner.columnWidth             = vscode.workspace.getConfiguration().get('autoalign.columnWidth');
 
       let editor                      = vscode.window.activeTextEditor;
@@ -40,6 +41,16 @@ exports.activate = activate;
 function deactivate() {
 }
 exports.deactivate = deactivate;
+function getMoveableItemsArray() {
+  let config= vscode.workspace.getConfiguration().get('autoalign.moveableItems') || [];
+  let additional =vscode.workspace.getConfiguration().get('autoalign.moveableItemsAdditional') || [];
+  return config.concat(additional);
+}
+function getNonMoveableItemsArray() {
+  let config= vscode.workspace.getConfiguration().get('autoalign.nonMoveableItems') || [];
+  let additional =vscode.workspace.getConfiguration().get('autoalign.nonMoveableItemsAdditional') || [];
+  return config.concat(additional);
+}
 function getTextFromSelection(editor, selection) {
   if ( ! editor || ! editor.document || ! selection) {
     return null;
@@ -52,8 +63,10 @@ function replaceEditBuilderSelectionWith(editBuilder, selection, newText) {
   }
   editBuilder.replace(rangeFromSelection(selection), newText);
 }
-function rangeFromSelection(selection) {
-  return new vscode.Range(selection.start.line, selection.start.character, selection.end.line, selection.end.character);
+function rangeFromSelection(selection, includeFullLine=true) {
+  let startChar = includeFullLine ? 0 : selection.start.character;
+  let endChar = includeFullLine ? 5000 : selection.end.character;
+  return new vscode.Range(selection.start.line, startChar, selection.end.line, endChar);
 }
 function isSomethingSelected(editor) {
   if ( ! editor) {
@@ -79,7 +92,8 @@ class Aligner {
   constructor() {
     this.movableItemsList       = [];
     this.nonMovableItemsList    = [];
-    this.minSeparation          = 3;
+    this.minSeparationLeft      = 3;
+    this.minSeparationRight     = 1;
     this.columnWidth            = undefined;
   }
   align(text) {
@@ -95,37 +109,41 @@ class Aligner {
     }
 
     // GET FARTHEST ALIGNABLE ELEMENT
-    let farthestAlignable           = 0;
+    let farthestAlignablePosition   = 0;
     lines.forEach(line => {
-      let lineAlignablePosition     = this._getAlignablePosition(line);
-      if (lineAlignablePosition >= farthestAlignable) {
+      let alignable                 = this._getAlignablePositionAndItem(line);
+
+      let leftStringTrimed          = line.substr(0, alignable.position).trimRight();
+      let lineAlignPosition         = leftStringTrimed.length;
+
+      if (lineAlignPosition >= farthestAlignablePosition) {
 
         // this is the farthest we've been!
-        farthestAlignable           = lineAlignablePosition;
+        farthestAlignablePosition   = lineAlignPosition;
         
         // now, figure out how much white-space is "to the left" of the character
-        let leftOfCharacter         = line.substr(0, lineAlignablePosition-1);
+        let leftOfCharacter         = line.substr(0, lineAlignPosition-1);
         let unTrimmedLength         = leftOfCharacter.length;
         let trimmendLength          = this._trimEnd(leftOfCharacter).length;
         let whiteAtEndCount         = (unTrimmedLength - trimmendLength);
 
-        // we need to make sure it is the "minimum" white-space
-        if (whiteAtEndCount < this.minSeparation) {
-          let addAtEndCount         = this.minSeparation - whiteAtEndCount;
-          farthestAlignable         += addAtEndCount;          
+        // we need to make sure it is the "minimumLeft" white-space
+        if (whiteAtEndCount < this.minSeparationLeft) {
+          let addAtEndCount         = this.minSeparationLeft - whiteAtEndCount;
+          farthestAlignablePosition         += addAtEndCount;          
         }
 
         // NEAREST FACTOR OF
-        if (this.columnWidth > 1 && farthestAlignable % this.columnWidth) {
-          farthestAlignable         = ((~~(farthestAlignable/this.columnWidth) + 1) * this.columnWidth);
+        if (this.columnWidth > 1 && farthestAlignablePosition % this.columnWidth) {
+          farthestAlignablePosition         = ((~~(farthestAlignablePosition/this.columnWidth) + 1) * this.columnWidth);
         }
       }
     });
 
     // WE HAVE THINGS TO ALIGN
-    if (farthestAlignable > 0) {
+    if (farthestAlignablePosition > 0) {
       for (let i = 0; i < lines.length; i++) {
-        lines[i]                    = this._alignToPosition(lines[i], farthestAlignable);
+        lines[i]                    = this._alignToPosition(lines[i], farthestAlignablePosition);
       }
     }
     
@@ -134,40 +152,67 @@ class Aligner {
 
   //** INTERNALS */
   _alignToPosition(line, position) {
-    let nearestMovablePosition = this._getAlignablePosition(line);
-    
+    let moveable = this._getAlignablePositionAndItem(line);
+
     // BAIL : nothing is movable
-    if (nearestMovablePosition < 0 || nearestMovablePosition >= position) {
+    if (moveable.position < 0 || moveable.position >= line.length) {
       return line;
     }
 
-    let insertString = ' '.repeat(position - nearestMovablePosition);
-    return this._splice(line, nearestMovablePosition, 0, insertString);
+    // create parts
+    let leftLine    = line.substr(0, moveable.position).trimRight();
+    let rightLine   = line.substr(moveable.position + moveable.item.length).trim();
+    let leftInsertString    = ' '.repeat(Math.max(this.minSeparationLeft, (position - leftLine.length)));
+    let rightInsertString   = ' '.repeat(Math.max(this.minSeparationRight, 1));
+
+    return leftLine + leftInsertString + moveable.item + rightInsertString + rightLine;
   }
-  _getAlignablePosition(line) {
-    let nearestMovablePosition = this._getNearestMovablePosition(line);
+  _getAlignablePositionAndItem(line) {
+    let reply = {
+      position    : -1,
+      item        : undefined
+    }
+    
+    let moveable        = this._getNearestMovablePositionAndItem(line);
 
     // BAIL : nothing is movable
-    if (nearestMovablePosition < 0) {
-      return -1;
+    if (moveable.position < 0) {
+      return reply;
     }
 
-    let nearestNonMovablePosition = this._getNearestNonMovablePosition(line);
+    let nonMoveable     = this._getNearestNonMovablePositionAndItem(line);
 
     // WE HAVE NON-MOVABLES FIRST : nothing is movable
-    if (nearestNonMovablePosition > -1 && nearestMovablePosition >= nearestNonMovablePosition) {
-      return -1;
+    if (nonMoveable.position > -1 && nonMoveable.position <= moveable.position ) {
+      return reply;
     }
 
-    return nearestMovablePosition;
+    reply.position      = moveable.position;
+    reply.item          = moveable.item;
+
+    return reply;
   }
-  _getNearestMovablePosition(line) {
-    return this._getNearestOccurance(line, this.movableItemsList);
+  _getNearestMovablePositionAndItem(line) {
+    return this._getNearestOccurancePositionAndItem(line, this.movableItemsList);
   }
-  _getNearestNonMovablePosition(line) {
-    return this._getNearestOccurance(line, this.nonMovableItemsList);
+  _getNearestNonMovablePositionAndItem(line) {
+    return this._getNearestOccurancePositionAndItem(line, this.nonMovableItemsList);
   }
-  _getNearestOccurance(line, itemList) {
+  _getNearestOccurancePositionAndItem(line, itemList) {
+    /**
+     * will return a structure so that a caller can tell
+     * where the item is in the line but also what was found
+     *   {
+     *    position : 5,
+     *    item : '=='
+     *   } 
+     * 
+     */
+    let reply = {
+      position    : -1,
+      item        : undefined
+    }
+
     let nearestPosition                   = 1000000; // simply huge to start
     let foundItem                         = undefined;
     itemList.forEach(item => {
@@ -177,7 +222,12 @@ class Aligner {
         nearestPosition                   = Math.min(nearestPosition, line.indexOf(item));
       }
     });
-    return foundItem ? nearestPosition    : -1;
+
+    if (foundItem) {
+      reply.position    = nearestPosition;
+      reply.item        = foundItem;
+    }
+    return reply;
   }
   _splice(text, start, delCount, insertText) {
     return text.slice(0, start) + insertText + text.slice(start + Math.abs(delCount));
@@ -187,5 +237,31 @@ class Aligner {
       return text;
     }
     return text.replace(/[\s\uFEFF\xA0]+$/g, '');
+  }
+  _regexLastIndexOf(text, regex, startpos) {
+    // alteration of answer : https://stackoverflow.com/a/274094/473501
+    if ( ! text || ! regex) {
+      return -1;
+    }
+
+    regex                   = (regex.global) ? regex : new RegExp(regex.source, "g" + (regex.ignoreCase ? "i" : "") + (regex.multiLine ? "m" : ""));
+    if (typeof(startpos) === "undefined") {
+        startpos            = text.length;
+    } 
+    
+    else if(startpos < 0) {
+        startpos            = 0;
+    }
+
+    let stringToWorkWith    = text.substring(0, startpos + 1);
+    let lastIndexOf         = -1;
+    let nextStop            = 0;
+    let result;
+
+    while((result           = regex.exec(stringToWorkWith)) != null) {
+        lastIndexOf         = result.index;
+        regex.lastIndex     = ++nextStop;
+    }
+    return lastIndexOf;
   }
 }

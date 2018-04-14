@@ -13,12 +13,12 @@
       "dvr_expiring": false,
       "playable": false,
       "another": true,
-      "airing_date": "2018-04-14T01:00:00.000Z",
-      "synopsis": "Wayde and Brett must come up with three complementary interiors, one with a working fireplace.",
-      "series_synopsis": "If your idea of an exciting aquarium is the run-of-the-mill rectangular variety with a few exotic fish thrown in, you're not welcome in the wet and wonderful world of Wayde King and Brett Raymer. The brothers-in-law, best friends and business partners operate Acrylic Tank Manufacturing, the biggest aquarium-building manufacturer in the U.S. \"Tanked\" showcases the guys, their family members who also work at ATM and the shop's crew as they create over-the-top aquariums for a wide array of clients, both celebrities and regular folks. The tanks range from 50 to 50,000 gallons in size, are filled with some of the world's most unusual, colorful and quirky fish, and are limited only by one's imagination.",
+      "airing_date" :"2018-04-14T01:00:00.000Z",
+      "synopsis":"Wayde and Brett must come up with three complementary interiors, one with a working fireplace.",
+      "series_synopsis":"If your idea of an exciting aquarium is the run-of-the-mill rectangular variety with a few exotic fish thrown in, you're not welcome in the wet and wonderful world of Wayde King and Brett Raymer. The brothers-in-law, best friends and business partners operate Acrylic Tank Manufacturing, the biggest aquarium-building manufacturer in the U.S. \"Tanked\" showcases the guys, their family members who also work at ATM and the shop's crew as they create over-the-top aquariums for a wide array of clients, both celebrities and regular folks. The tanks range from 50 to 50,000 gallons in size, are filled with some of the world's most unusual, colorful and quirky fish, and are limited only by one's imagination.",
       "expiration_date": "2018-04-17T01:00:00.000Z",
       "dvr_expiration_date": "2018-05-12T01:00:00.000Z",
-      "broadcast_date": "2018-04-13T00:00:00.000Z",
+      "broadcast_date"  :"2018-04-13T00:00:00.000Z",
       "genres": [{
           "genre_id": 79,
           "genre": "Outdoors & Nature"

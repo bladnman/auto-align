@@ -2,7 +2,7 @@
     "name": "auto-align",
     "displayName": "Auto-Align",
     "description": "Align code on assignment characters.",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "bladnman",
 
     "engines": {
@@ -37,6 +37,11 @@
                   "-="
                 ],
                 "description": "Which items will be aligned"
+              },
+              "autoalign.moveableItemsAdditional": {
+                "type": "array",
+                "default": [],
+                "description": "Added items which items will be aligned"
               },
               "autoalign.nonMoveableItems": {
                 "type": "array",
@@ -95,10 +100,20 @@
                 ],
                 "description": "If any of these come before any moveable item then it will prevent the line from being aligned."
               },
-              "autoalign.minSeparation": {
+              "autoalign.nonMoveableItemsAdditional": {
+                "type": "array",
+                "default": [],
+                "description": "Added items which items will be unmoveable"
+              },
+              "autoalign.minSeparationLeft": {
                 "type": "number",
                 "default": 3,
                 "description": "Minimum number of spaces to the left of the aligned items"
+              },
+              "autoalign.separationRight": {
+                "type": "number",
+                "default": 1,
+                "description": "Number of spaces to the right of the aligned items"
               },
               "autoalign.columnWidth": {
                 "type": "number",
