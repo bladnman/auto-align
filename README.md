@@ -40,6 +40,8 @@ This extension contributes the following settings:
 
 ## Release Notes
 
+### 0.0.5
+Fixed an issue where very short lines were not aligning quite right
 
 ### 0.0.4
 Big improvements around customization. Also will now re-align already aligned areas.

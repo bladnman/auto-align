@@ -1,3 +1,9 @@
+const chai=require('chai');
+const assert=chai.assert;
+const expect  = chai.expect;
+let Actions       = require('./Actions');
+let Utils  = require('./Utils');
+
 class Sample {
 
   constructor() {
@@ -5,8 +11,11 @@ class Sample {
     let name              = 'hello';
     let your_name_here    = '';
     if (x == 5) {}
-    // time to hunt                         = yes  
+    // time to hunt    
+    let addAtEndCount   = this.minSeparationLeft - whiteAtEndCount;
+    farthestAlignablePosition         += addAtEndCount;                               = yes  
   }
+
 
   align(text) {
     const lines = text.split('\n');

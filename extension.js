@@ -17,6 +17,8 @@ function activate(context) {
       aligner.separationRight         = vscode.workspace.getConfiguration().get('autoalign.separationRight');
       aligner.columnWidth             = vscode.workspace.getConfiguration().get('autoalign.columnWidth');
 
+      // aligner.minSeparationLeft       = Math.max(aligner.minSeparationLeft, aligner.columnWidth*2);
+
       let editor                      = vscode.window.activeTextEditor;
       let selections                  = editor.selections; // handle multiple selections the same
 
@@ -129,13 +131,14 @@ class Aligner {
 
         // we need to make sure it is the "minimumLeft" white-space
         if (whiteAtEndCount < this.minSeparationLeft) {
-          let addAtEndCount         = this.minSeparationLeft - whiteAtEndCount;
+          let addAtEndCount   = this.minSeparationLeft - whiteAtEndCount;
           farthestAlignablePosition         += addAtEndCount;          
         }
 
         // NEAREST FACTOR OF
-        if (this.columnWidth > 1 && farthestAlignablePosition % this.columnWidth) {
-          farthestAlignablePosition         = ((~~(farthestAlignablePosition/this.columnWidth) + 1) * this.columnWidth);
+        if (this.columnWidth > 1 && farthestAlignablePosition % this.columnWidth) { 
+          let numberOfWholeColumns      = ~~(farthestAlignablePosition / this.columnWidth);
+          farthestAlignablePosition     = (numberOfWholeColumns + 1) * this.columnWidth;
         }
       }
     });
@@ -160,9 +163,9 @@ class Aligner {
     }
 
     // create parts
-    let leftLine    = line.substr(0, moveable.position).trimRight();
-    let rightLine   = line.substr(moveable.position + moveable.item.length).trim();
-    let leftInsertString    = ' '.repeat(Math.max(this.minSeparationLeft, (position - leftLine.length)));
+    let leftLine            = line.substr(0, moveable.position).trimRight();
+    let rightLine           = line.substr(moveable.position + moveable.item.length).trim();
+    let leftInsertString    = ' '.repeat(position - leftLine.length);
     let rightInsertString   = ' '.repeat(Math.max(this.minSeparationRight, 1));
 
     return leftLine + leftInsertString + moveable.item + rightInsertString + rightLine;
