@@ -2,7 +2,7 @@
     "name": "auto-align",
     "displayName": "Auto-Align",
     "description": "Align code on assignment characters.",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "publisher": "bladnman",
 
     "engines": {
@@ -115,6 +115,18 @@
                 "type": "number",
                 "default": 2,
                 "description": "If this is > 1 then all alignments will be matched up to imaginary columns of this width"
+              },
+              "autoalign.skipLinesEndingWithItems": {
+                "type": "array",
+                "default": [
+                  "{"
+                ],
+                "description": "If the line ends with these items they will not be aligned."
+              },
+              "autoalign.skipLinesEndingWithItemsAdditional": {
+                "type": "array",
+                "default": [],
+                "description": "Added items which lines will be skipped if ending with"
               }
             }
           }

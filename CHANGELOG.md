@@ -4,6 +4,11 @@
 - Initial release
 
 ## Releases
+
+### 0.0.7
+* Added ability to skip lines that end in certain patterns. This is most useful to me in something like CSS or JSON where I don't want the block-assignment to be aligned, but 
+I do for the rules.
+
 ### 0.0.6
 * Fixed an issue where if a line had more than 1 moveable item it would move the first, but replace it with the last. Ugly.
 * Added changelog

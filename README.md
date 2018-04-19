@@ -29,10 +29,32 @@ You get the idea. This can be done in any language format.
 
 This extension contributes the following settings:
 
-* `autoalign.moveableItemsAdditional` : Items you want ADDED to the default list of moveable items. Use this one as you don't have to repeat the whole list of defaults.
-* `autoalign.nonMoveableItemsAdditional` : Items you want ADDED to the default list of non-moveable items. Use this one as you don't have to repeat the whole list of defaults.
-* `autoalign.moveableItems`: An array of strings of the items which can be moved and aligned
-* `autoalign.nonMoveableItems`: An array of string which cannot be moved and will prevent a line from being aligned
-* `autoalign.minSeparationLeft`: Minimum amount of white-space placed before the aligned items
-* `autoalign.separationRight`: The number of spaces you want after the aligned item (e.g. spaces to the right of the equals)
-* `autoalign.columnWidth`: If this is > 1 then all alignments will be matched up to imaginary columns of this width
+### Additional Lists
+Use these settings to "add" to the default lists in the extension so that you don't have to repeat the whole original list.
+
+| setting name                                       | description      |
+| -------------------------------------------------- |------------------|
+| `autoalign.moveableItemsAdditional`                | Items you want **added** to the default list of **moveable items**
+| `autoalign.nonMoveableItemsAdditional`             | Items you want **added** to the default list of **non-moveable items**
+| `autoalign.skipLinesEndingWithItemsAdditional`     | Lines to not be aligned if they **end** with these items
+
+
+### Properties
+Some parameters to define how things lay out.
+
+| setting name                   | description      |
+| ------------------------------ |------------------|
+| `autoalign.minSeparationLeft`  |  Minimum amount of white-space placed **before** the aligned items
+| `autoalign.separationRight`    |  The number of spaces you want after the aligned item (e.g. spaces to the right of the equals)
+| `autoalign.columnWidth`        |   If this is > 1 then all alignments will be matched up to imaginary columns of this width
+
+
+### Default Lists
+You can also override the original default list to be in complete control of all moveable and non-moveable items.
+
+| setting name                                    | description      |
+| ----------------------------------------------- |------------------|
+| `autoalign.moveableItems`                       | An array of strings of the items which can be moved and aligned
+| `autoalign.nonMoveableItems`                    |  An array of string which cannot be moved and will prevent a line from being aligned
+| `autoalign.skipLinesEndingWithItemsAdditional`  |  An array of string which cannot be moved and will prevent a line from being aligned
+

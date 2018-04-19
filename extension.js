@@ -10,17 +10,15 @@ function activate(context) {
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand('extension.autoalign', function () {
-      const aligner                   = new Aligner();
-      aligner.movableItemsList        = getMoveableItemsArray();
-      aligner.nonMovableItemsList     = getNonMoveableItemsArray();
-      aligner.minSeparationLeft       = vscode.workspace.getConfiguration().get('autoalign.minSeparationLeft');
-      aligner.separationRight         = vscode.workspace.getConfiguration().get('autoalign.separationRight');
-      aligner.columnWidth             = vscode.workspace.getConfiguration().get('autoalign.columnWidth');
-
-      // aligner.minSeparationLeft       = Math.max(aligner.minSeparationLeft, aligner.columnWidth*2);
-
-      let editor                      = vscode.window.activeTextEditor;
-      let selections                  = editor.selections; // handle multiple selections the same
+      const aligner                       = new Aligner();
+      aligner.movableItemsList            = getMoveableItemsArray();
+      aligner.nonMovableItemsList         = getNonMoveableItemsArray();
+      aligner.skippableEndingItemsArray   = getSkippableEndingItemsArray();
+      aligner.minSeparationLeft           = vscode.workspace.getConfiguration().get('autoalign.minSeparationLeft');
+      aligner.separationRight             = vscode.workspace.getConfiguration().get('autoalign.separationRight');
+      aligner.columnWidth                 = vscode.workspace.getConfiguration().get('autoalign.columnWidth');
+      let editor                          = vscode.window.activeTextEditor;
+      let selections                      = editor.selections; // handle multiple selections the same
 
       if ( ! isSomethingSelected(editor) ) {
         vscode.window.showInformationMessage("Auto-Align only works on selections.");
@@ -51,6 +49,11 @@ function getMoveableItemsArray() {
 function getNonMoveableItemsArray() {
   let config= vscode.workspace.getConfiguration().get('autoalign.nonMoveableItems') || [];
   let additional =vscode.workspace.getConfiguration().get('autoalign.nonMoveableItemsAdditional') || [];
+  return config.concat(additional);
+}
+function getSkippableEndingItemsArray() {
+  let config= vscode.workspace.getConfiguration().get('autoalign.skipLinesEndingWithItems') || [];
+  let additional =vscode.workspace.getConfiguration().get('autoalign.skipLinesEndingWithItemsAdditional') || [];
   return config.concat(additional);
 }
 function getTextFromSelection(editor, selection) {
@@ -94,6 +97,7 @@ class Aligner {
   constructor() {
     this.movableItemsList       = [];
     this.nonMovableItemsList    = [];
+    this.skippableEndingItemsArray = [];
     this.minSeparationLeft      = 3;
     this.minSeparationRight     = 1;
     this.columnWidth            = undefined;
@@ -216,6 +220,11 @@ class Aligner {
       item        : undefined
     }
 
+    // SKIPPABLE
+    if (this._isLineSkippable(line)) {
+      return reply;
+    }
+
     let nearestPosition                   = 1000000; // simply huge to start
     let foundItem                         = undefined;
     for (let i = 0; i < itemList.length; i++) {
@@ -233,6 +242,21 @@ class Aligner {
       reply.item        = foundItem;
     }
     return reply;
+  }
+  _isLineSkippable(line) {
+    if ( ! line || line.length < 1 ) {
+      return true;
+    }
+
+    let trimmedLine = this._trimEnd(line);
+    for (let i = 0; i < this.skippableEndingItemsArray.length; i++) {
+      const item = this.skippableEndingItemsArray[i];
+      if (this._endsWith(trimmedLine, item)) {
+        return true;
+      }      
+    }
+
+    return false;
   }
   _splice(text, start, delCount, insertText) {
     return text.slice(0, start) + insertText + text.slice(start + Math.abs(delCount));
@@ -268,5 +292,16 @@ class Aligner {
         regex.lastIndex     = ++nextStop;
     }
     return lastIndexOf;
+  }
+  _endsWith(text, lookFor, caseInsensitive) {
+    if ( ! text || text.length < 1 || ! lookFor || lookFor.length < 1 ) {
+      return false;
+    }
+  
+    if (caseInsensitive) {
+      return text.toLowerCase().slice(-lookFor.length) === lookFor.toLowerCase();
+    }
+  
+    return text.slice(-lookFor.length) === lookFor;
   }
 }

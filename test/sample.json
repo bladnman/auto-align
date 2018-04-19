@@ -19,8 +19,8 @@
       "expiration_date": "2018-04-17T01:00:00.000Z",
       "dvr_expiration_date": "2018-05-12T01:00:00.000Z",
       "broadcast_date"  :"2018-04-13T00:00:00.000Z",
-      "genres": [{
-          "genre_id": 79,
+      "genres" : [{
+          "genre_id" : 79,
           "genre": "Outdoors & Nature"
         },
         {
