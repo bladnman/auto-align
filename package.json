@@ -2,7 +2,7 @@
     "name": "auto-align",
     "displayName": "Auto-Align",
     "description": "Align code on assignment characters.",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "publisher": "bladnman",
 
     "engines": {

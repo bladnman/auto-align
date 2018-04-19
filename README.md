@@ -36,15 +36,3 @@ This extension contributes the following settings:
 * `autoalign.minSeparationLeft`: Minimum amount of white-space placed before the aligned items
 * `autoalign.separationRight`: The number of spaces you want after the aligned item (e.g. spaces to the right of the equals)
 * `autoalign.columnWidth`: If this is > 1 then all alignments will be matched up to imaginary columns of this width
-
-
-## Release Notes
-
-### 0.0.5
-Fixed an issue where very short lines were not aligning quite right
-
-### 0.0.4
-Big improvements around customization. Also will now re-align already aligned areas.
-
-### 0.0.1
-Initial release

@@ -218,13 +218,15 @@ class Aligner {
 
     let nearestPosition                   = 1000000; // simply huge to start
     let foundItem                         = undefined;
-    itemList.forEach(item => {
+    for (let i = 0; i < itemList.length; i++) {
+      const item                          = itemList[i];
       let positionOfItem                  = line.indexOf(item);
       if (positionOfItem > -1) {
         foundItem                         = item;
         nearestPosition                   = Math.min(nearestPosition, line.indexOf(item));
+        break;
       }
-    });
+    }
 
     if (foundItem) {
       reply.position    = nearestPosition;

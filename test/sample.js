@@ -13,7 +13,11 @@ class Sample {
     if (x == 5) {}
     // time to hunt    
     let addAtEndCount   = this.minSeparationLeft - whiteAtEndCount;
-    farthestAlignablePosition         += addAtEndCount;                               = yes  
+    farthestAlignablePosition         += addAtEndCount;
+
+    URLS = {};
+    URLS.LVL.USER_AUTH    = 'https://this.here.com/there';
+    URLS.LVL.DATA_POINT   = 'https://this.here.com/there';
   }
 
 
