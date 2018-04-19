@@ -7,9 +7,9 @@ let Utils  = require('./Utils');
 class Sample {
 
   constructor() {
-    let x                 = 5;
-    let name              = 'hello';
-    let your_name_here    = '';
+    let x   = 5;
+    let name     = 'hello';
+    let your_name_here = '';
     if (x == 5) {}
     // time to hunt    
     let addAtEndCount   = this.minSeparationLeft - whiteAtEndCount;

@@ -2,6 +2,7 @@
 
 This is an alignment utility that allows for a bit of customization. It will line up assignment operators (`=` and `:` by default) in selected text.
 
+![Example](example.gif)
 
 ## Features
 

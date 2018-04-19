@@ -5,6 +5,10 @@
 
 ## Releases
 
+### 0.0.9
+* Added example screenshot
+* Added '[' to line skip defaults
+
 ### 0.0.8
 * Added ability to skip lines that end in certain patterns. This is most useful to me in something like CSS or JSON where I don't want the block-assignment to be aligned, but 
 I do for the rules.

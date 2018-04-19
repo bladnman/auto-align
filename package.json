@@ -2,7 +2,7 @@
     "name": "auto-align",
     "displayName": "Auto-Align",
     "description": "Align code on assignment characters.",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "publisher": "bladnman",
     "repository": "https://bladnman.visualstudio.com/_git/auto-align",
     "engines": {
@@ -119,7 +119,8 @@
               "autoalign.skipLinesEndingWithItems": {
                 "type": "array",
                 "default": [
-                  "{"
+                  "{",
+                  "["
                 ],
                 "description": "If the line ends with these items they will not be aligned."
               },
