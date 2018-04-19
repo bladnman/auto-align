@@ -5,6 +5,7 @@
     "version": "0.0.9",
     "publisher": "bladnman",
     "repository": "https://bladnman.visualstudio.com/_git/auto-align",
+    "icon": "icon.png",
     "engines": {
         "vscode": "^1.22.0"
     },
