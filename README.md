@@ -6,6 +6,7 @@ This is an alignment utility that allows for a bit of customization. It will lin
 
 ## Features
 
+_Still working on it... I use it daily so it works, but always finding little things. Send me an issue on GitHub if you are looking for something or something doesn't work._
 
 This system will *not* alter any lines where any of the `non-moveable` items are found to the left of a moveable item.
 

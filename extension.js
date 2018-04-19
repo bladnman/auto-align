@@ -233,7 +233,6 @@ class Aligner {
       if (positionOfItem > -1) {
         foundItem                         = item;
         nearestPosition                   = Math.min(nearestPosition, line.indexOf(item));
-        break;
       }
     }
 

@@ -16,10 +16,16 @@ class Sample {
     farthestAlignablePosition         += addAtEndCount;
 
     URLS = {};
-    URLS.LVL.USER_AUTH    = 'https://this.here.com/there';
-    URLS.LVL.DATA_POINT   = 'https://this.here.com/there';
+    URLS.LVL.USER_AUTH='https://this.here.com/there';
+    URLS.LVL.DATA_POINT = 'https://this.here.com/there';
+    var cookie = JSON.parse(this.responseText);
+    if (cookie) {
+      browser
+        .url(`https://${cookie.domain}/__path_to_trigger_error__/`);
+    }
   }
-
+      .url(`https://${cookie.domain}/__path_to_trigger_error__/`);
+  var cookie      = JSON.parse(this.responseText);
 
   align(text) {
     const lines = text.split('\n');

@@ -1,9 +1,10 @@
 # Change Log
 
-## [Unreleased]
-- Initial release
-
 ## Releases
+
+### 0.0.10
+* Fixed an issue where it stopped after finding the _first_ non-movable item instead of looking through all of them and finding the farthest-left.
+* Added back-tick to non-moveable list. Templates were getting hammered.
 
 ### 0.0.9
 * Added example screenshot

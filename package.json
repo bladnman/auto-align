@@ -2,7 +2,7 @@
     "name": "auto-align",
     "displayName": "Auto-Align",
     "description": "Align code on assignment characters.",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "publisher": "bladnman",
     "repository": "https://github.com/bladnman/auto-align",
     "icon": "images/icon.png",
@@ -93,7 +93,10 @@
                   ":root",
                   ":target",
                   ":valid",
-                  ":visited"
+                  ":visited",
+                  "`",
+                  "http:",
+                  "https:"
                 ],
                 "description": "If any of these come before any moveable item then it will prevent the line from being aligned."
               },
