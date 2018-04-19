@@ -2,7 +2,7 @@
     "name": "auto-align",
     "displayName": "Auto-Align",
     "description": "Align code on assignment characters.",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "publisher": "bladnman",
     "repository": "https://bladnman.visualstudio.com/_git/auto-align",
     "engines": {
