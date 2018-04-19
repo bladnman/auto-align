@@ -24,8 +24,6 @@ class Sample {
         .url(`https://${cookie.domain}/__path_to_trigger_error__/`);
     }
   }
-      .url(`https://${cookie.domain}/__path_to_trigger_error__/`);
-  var cookie      = JSON.parse(this.responseText);
 
   align(text) {
     const lines = text.split('\n');
