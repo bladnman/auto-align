@@ -230,7 +230,7 @@ class Aligner {
     for (let i = 0; i < itemList.length; i++) {
       const item                          = itemList[i];
       let positionOfItem                  = line.indexOf(item);
-      if (positionOfItem > -1) {
+      if (positionOfItem > -1 && positionOfItem < nearestPosition) {
         foundItem                         = item;
         nearestPosition                   = Math.min(nearestPosition, line.indexOf(item));
       }

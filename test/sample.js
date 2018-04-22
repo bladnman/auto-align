@@ -15,6 +15,14 @@ class Sample {
     let addAtEndCount   = this.minSeparationLeft - whiteAtEndCount;
     farthestAlignablePosition         += addAtEndCount;
 
+
+    this._drawFreqMills   = -1;   // -1 : immediate
+    this._dataDrawLength = -1;   // -1 : all data
+    this._dirty   = false;
+    this._redrawTimer = undefined;
+    this._chartData  = new DataCollector(data);
+    this._chart        = new Charter(canvas);
+
     URLS = {};
     URLS.LVL.USER_AUTH='https://this.here.com/there';
     URLS.LVL.DATA_POINT = 'https://this.here.com/there';
