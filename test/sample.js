@@ -3,6 +3,7 @@ const assert=chai.assert;
 const expect  = chai.expect;
 let Actions       = require('./Actions');
 let Utils  = require('./Utils');
+try.something => that.is.not.real;
 
 class Sample {
 
@@ -44,3 +45,6 @@ class Sample {
     return `farthest alignable (${farthestAlignable})`;
   }
 }
+
+
+

@@ -11,9 +11,14 @@ function activate(context) {
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand('extension.autoalign', function () {
       const aligner                       = new Aligner();
-      aligner.movableItemsList            = getMoveableItemsArray();
-      aligner.nonMovableItemsList         = getNonMoveableItemsArray();
-      aligner.skippableEndingItemsArray   = getSkippableEndingItemsArray();
+      aligner.movableItemsList            = getMoveableItemsArray().sort(sortLengthDesc);
+      aligner.nonMovableItemsList         = getNonMoveableItemsArray().sort(sortLengthDesc);
+      aligner.skippableEndingItemsArray   = getSkippableEndingItemsArray().sort(sortLengthDesc);
+
+      // remove moveable items from non-moveable list
+      aligner.nonMovableItemsList         = getDifference(aligner.nonMovableItemsList, aligner.movableItemsList);
+
+
       aligner.minSeparationLeft           = vscode.workspace.getConfiguration().get('autoalign.minSeparationLeft');
       aligner.separationRight             = vscode.workspace.getConfiguration().get('autoalign.separationRight');
       aligner.columnWidth                 = vscode.workspace.getConfiguration().get('autoalign.columnWidth');
@@ -62,6 +67,10 @@ function getTextFromSelection(editor, selection) {
   }
   return editor.document.getText(rangeFromSelection(selection));
 }
+function getDifference(a, b) {
+  // give us everything in a which is not in b
+  return a.filter(x => !b.includes(x));
+}
 function replaceEditBuilderSelectionWith(editBuilder, selection, newText) {
   if ( ! editBuilder || ! selection) {
     return;
@@ -86,6 +95,11 @@ function isSomethingSelected(editor) {
   });
 
   return foundSomething;
+}
+function sortLengthDesc(a,b) {
+  // ASC  -> a.length - b.length
+  // DESC -> b.length - a.length
+  return b.length - a.length;
 }
 /** 
  * - - - - - - - - - - - - - -
