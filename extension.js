@@ -208,8 +208,9 @@ class Aligner {
     return leftLine + leftInsertString + moveable.item + rightInsertString + rightLine;
   }
   _getTabCount(position, line) {
-    let wholeTabs = ~~((position - line.length) / this.tabSize);
-    let partialTabs = (line.length + (wholeTabs * this.tabSize)) % this.tabSize == 0 ? 0 : 1;
+    let closestpos = Math.ceil(position / this.tabSize) * this.tabSize;
+    let wholeTabs = ~~((closestpos - line.length) / this.tabSize);
+    let partialTabs = (closestpos - (line.length + (wholeTabs * this.tabSize))) % this.tabSize == 0 ? 0 : 1;
     return wholeTabs + partialTabs;
   }
 
