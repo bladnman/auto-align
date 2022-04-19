@@ -26,6 +26,21 @@
     "configuration": [{
       "title": "Auto-Align Configuration",
       "properties": {
+        "autoalign.useTabs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use TAB to allign items instead of spaces"
+        },
+        "autoalign.minSeparationTabLeft": {
+          "type": "number",
+          "default": 1,
+          "description": "Minimum number of tabs to the left of the aligned items"
+        },
+        "autoalign.minSeparationTabRight": {
+          "type": "number",
+          "default": 0,
+          "description": "Minimum number of tabs to the right of the aligned items"
+        },
         "autoalign.moveableItems": {
           "type": "array",
           "default": [

@@ -21,7 +21,11 @@ function activate(context) {
 
       aligner.minSeparationLeft           = vscode.workspace.getConfiguration().get('autoalign.minSeparationLeft');
       aligner.separationRight             = vscode.workspace.getConfiguration().get('autoalign.separationRight');
+      aligner.minSeparationTabLeft        = vscode.workspace.getConfiguration().get('autoalign.minSeparationTabLeft');
+      aligner.minSeparationTabRight       = vscode.workspace.getConfiguration().get('autoalign.minSeparationTabRight');
       aligner.columnWidth                 = vscode.workspace.getConfiguration().get('autoalign.columnWidth');
+      aligner.useTab                      = vscode.workspace.getConfiguration().get('autoalign.useTabs');
+      aligner.tabSize                     = vscode.workspace.getConfiguration().get('editor.tabSize') || 1;
       let editor                          = vscode.window.activeTextEditor;
       let selections                      = editor.selections; // handle multiple selections the same
 
@@ -114,7 +118,11 @@ class Aligner {
     this.skippableEndingItemsArray = [];
     this.minSeparationLeft      = 3;
     this.minSeparationRight     = 1;
+    this.minSeparationTabLeft   = 1;
+    this.minSeparationTabRight  = 0;
     this.columnWidth            = undefined;
+    this.useTab                 = false;
+    this.tabSize                = undefined;
   }
   align(text) {
     if (!text) {
@@ -148,13 +156,13 @@ class Aligner {
         let whiteAtEndCount         = (unTrimmedLength - trimmendLength);
 
         // we need to make sure it is the "minimumLeft" white-space
-        if (whiteAtEndCount < this.minSeparationLeft) {
+        if (!this.useTab && whiteAtEndCount < this.minSeparationLeft) {
           let addAtEndCount   = this.minSeparationLeft - whiteAtEndCount;
           farthestAlignablePosition         += addAtEndCount;          
         }
 
         // NEAREST FACTOR OF
-        if (this.columnWidth > 1 && farthestAlignablePosition % this.columnWidth) { 
+        if (!this.useTab && this.columnWidth > 1 && farthestAlignablePosition % this.columnWidth) { 
           let numberOfWholeColumns      = ~~(farthestAlignablePosition / this.columnWidth);
           farthestAlignablePosition     = (numberOfWholeColumns + 1) * this.columnWidth;
         }
@@ -183,11 +191,29 @@ class Aligner {
     // create parts
     let leftLine            = line.substr(0, moveable.position).trimRight();
     let rightLine           = line.substr(moveable.position + moveable.item.length).trim();
-    let leftInsertString    = ' '.repeat(position - leftLine.length);
-    let rightInsertString   = ' '.repeat(Math.max(this.minSeparationRight, 1));
+    let leftInsertString    = '';
+    let rightInsertString   = '';
 
+    if (this.useTab) {
+      let tabs = this._getTabCount(position, leftLine);
+
+      leftInsertString    = '\t'.repeat(tabs + this.minSeparationTabLeft);
+      rightInsertString   = ' ' + '\t'.repeat(this.minSeparationTabRight);
+      
+    } else {
+      leftInsertString    = ' '.repeat(position - leftLine.length);
+      rightInsertString   = ' '.repeat(Math.max(this.minSeparationRight, 1));
+    }
+    
     return leftLine + leftInsertString + moveable.item + rightInsertString + rightLine;
   }
+  _getTabCount(position, line) {
+    let closestpos = Math.ceil(position / this.tabSize) * this.tabSize;
+    let wholeTabs = ~~((closestpos - line.length) / this.tabSize);
+    let partialTabs = (closestpos - (line.length + (wholeTabs * this.tabSize))) % this.tabSize == 0 ? 0 : 1;
+    return wholeTabs + partialTabs;
+  }
+
   _getAlignablePositionAndItem(line) {
     let reply = {
       position    : -1,
